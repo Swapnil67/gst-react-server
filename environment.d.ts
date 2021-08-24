@@ -13,4 +13,4 @@ declare namespace NodeJS {
     JWT_REFRESH_TOKEN_EXPIRATION_TIME: string;
   }
   export type Environment = 'DEVELOPMENT' | 'PRODUCTION' | 'TEST';
-}
+} 

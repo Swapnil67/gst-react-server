@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'gst_detail', synchronize: false })
-export class Gstin_Detail {
+export class gst_details {
   @PrimaryGeneratedColumn()
   id: number;
 
