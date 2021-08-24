@@ -18,7 +18,8 @@ export class GstdetailsService {
   async getCompanyBySearch(name, req, res) {
     const companies = await this.gstDetailRepo
       .createQueryBuilder('companies')
-      .select()
+      .select(['companies.id', 'companies.lgnm'])
+      .cache(36288000000) // 7 * 24 *60 *60*1000
       .where('companies.lgnm LIKE :lgnm', { lgnm: `%${name}%` })
       .getManyAndCount();
 
@@ -29,8 +30,19 @@ export class GstdetailsService {
     console.log('FindAll init');
 
     try {
-      const details = await this.gstDetailRepo.find();
-      console.log('details get');
+      const details = await this.gstDetailRepo
+        .createQueryBuilder('gst')
+        .select(['gst.id', 'gst.lgnm'])
+        .cache(true)
+        .maxExecutionTime(10000)
+        .getMany();
+      // ({
+      //     cache: {
+      //       id: 'gst_search',
+      //       milliseconds: 2500000,
+      //     },
+      //   });
+      //   console.log('details get');
 
       if (!details) {
         throw new BadRequestException('Details Not Found');

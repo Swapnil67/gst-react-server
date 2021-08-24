@@ -9,9 +9,9 @@ import { GstdetailsModule } from './gstdetails/gstdetails.module';
 let envFilePath = '.env.development';
 console.log(`Running in ${process.env.ENVIRONMENT} MODE`);
 
-if(process.env.ENVIRONMENT === 'PRODUCTION'){
+if (process.env.ENVIRONMENT === 'PRODUCTION') {
   envFilePath = '.env.production';
-}else if (process.env.ENVIRONMENT === 'TEST') {
+} else if (process.env.ENVIRONMENT === 'TEST') {
   envFilePath = '.env.testing';
 }
 console.log(`${process.env.MYSQL_DB_HOST} , ${envFilePath}`);
@@ -30,6 +30,7 @@ console.log(`${process.env.MYSQL_DB_HOST} , ${envFilePath}`);
       database: process.env.MYSQL_DB_NAME,
       entities,
       synchronize: true,
+      cache: true,
     }),
     GstdetailsModule,
   ],
