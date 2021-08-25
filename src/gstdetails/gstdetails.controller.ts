@@ -49,6 +49,16 @@ export class GstdetailsController {
     return this.gstdetailsService.remove(+id);
   }
 
+  @Get('/company')
+  async getCompanyGst(@Req() req: Request, @Res() res: Response) {
+    const response = await this.gstdetailsService.findGstCompanyDetails(
+      req,
+      res,
+    );
+
+    return response;
+  }
+
   @Get(':name')
   async findSimilar(
     @Param('name') name: string,

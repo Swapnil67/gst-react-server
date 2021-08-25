@@ -14,7 +14,7 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
 } else if (process.env.ENVIRONMENT === 'TEST') {
   envFilePath = '.env.testing';
 }
-console.log(`${process.env.MYSQL_DB_HOST} , ${envFilePath}`);
+// console.log(`${process.env.MYSQL_DB_HOST} , ${envFilePath}`);
 
 @Module({
   imports: [
