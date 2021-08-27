@@ -49,7 +49,7 @@ export class GstdetailsController {
     return this.gstdetailsService.remove(+id);
   }
 
-  @Get('/company')
+  @Post('/company')
   async getCompanyGst(@Req() req: Request, @Res() res: Response) {
     const response = await this.gstdetailsService.findGstCompanyDetails(
       req,

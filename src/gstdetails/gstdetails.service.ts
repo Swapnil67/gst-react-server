@@ -45,7 +45,7 @@ export class GstdetailsService {
     try {
       // 284900
       const { id } = req.body;
-      // console.log('id ==> ', id);
+      console.log('id ==> ', id);
       if (id === undefined || id === null || id === '') {
         return res.status(400).json({
           code: -5,
