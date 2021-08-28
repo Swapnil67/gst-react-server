@@ -69,7 +69,7 @@ export class GstdetailsService {
       const gst_business_details_uniq = await this.gstBusinessDetailRepo
         .createQueryBuilder('detail')
         .where('detail.gstin = :mygst', { mygst: gstin })
-        .getOne()
+        .getMany()
         .catch((err) => {
           console.error('detail', err);
           throw new Error('Error at fetch data');

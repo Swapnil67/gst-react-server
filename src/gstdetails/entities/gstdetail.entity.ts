@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'gst_detail', synchronize: false })
 export class gst_details {
+  @Index()
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,6 +19,7 @@ export class gst_details {
   @Column()
   aggreTurnOverFY: string;
 
+  @Index({unique:true})
   @ApiProperty()
   @Column()
   lgnm: string;

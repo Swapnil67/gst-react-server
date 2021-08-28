@@ -18,6 +18,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtAccessGuard } from 'src/auth/guards/jwt-access-guard';
 import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh.gaurd';
 import { JwtAccessPayload } from 'src/auth/interfaces/jwt-payload.interface';
+import { UserLoginInfo } from './typeorm/dto/UserLoginInfo.dto';
 import { UserService } from './user.service';
 
 @ApiTags('User')
@@ -29,7 +30,7 @@ export class UserController {
   ) {}
 
   @Post('/login')
-  async login(@Res() res: Response, @Req() req: Request, @Body() body: any) {
+  async login(@Res() res: Response, @Req() req: Request, @Body() body: UserLoginInfo) {
     return await this.userService.login(res, req, body);
   }
 
