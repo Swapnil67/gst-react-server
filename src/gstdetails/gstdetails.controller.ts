@@ -83,6 +83,16 @@ export class GstdetailsController {
     );
     return data;
   }
+
+  @Get("/filing/fy/full")
+  async findDetailsOf_Filing_FinacialYear_ByGST(@Req() req: Request, @Res() res: Response) {
+    const data = await this.gstdetailsService.getDetailsOf_Filing_FinacialYear_ByGST(
+      req,
+      res
+    );
+    return data;
+  }
+  
   @Get("/filing/:gstin")
   async findGSTFiling(@Req() req: Request, @Res() res: Response) {
     const data = await this.gstdetailsService.getFilingDetailsFromGST(req, res);

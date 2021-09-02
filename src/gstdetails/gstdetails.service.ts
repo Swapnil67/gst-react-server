@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Request, Response } from "express";
@@ -27,14 +26,9 @@ export class GstdetailsService {
     try {
       const companies = await this.gstDetailRepo
         .createQueryBuilder("companies")
-        .distinct(true)
         .select(["companies.id", "companies.lgnm"])
-        .where("companies.lgnm LIKE :lgnm", { lgnm: `%${name}%` })
-        .groupBy("companies.lgnm")
-        .orderBy("companies.id", "DESC")
-        .limit(100)
-        .maxExecutionTime(10000)
-        .getMany()
+        .where(`companies.lgnm LIKE '%${name}%'`)
+        .getManyAndCount()
         .catch((err) => {
           console.error(err);
           return res.status(500).json({
@@ -42,8 +36,11 @@ export class GstdetailsService {
             message: "Data Not Exist",
           });
         });
+      // console.log({ companies });
 
-      return res.json({ companies });
+
+
+      return res.json({ ...companies });
     } catch (error) {
       console.error(error);
       return res.status(500).json({
@@ -53,7 +50,7 @@ export class GstdetailsService {
     }
   }
 
-  async findGstCompanyDetails(req, res) {
+  async findGstCompanyDetails(req: Request, res: Response) {
     try {
       // 284900
       const { id } = req.body;
@@ -139,7 +136,7 @@ export class GstdetailsService {
     }
   }
 
-  async getFilingDetailsFromGST(req, res) {
+  async getFilingDetailsFromGST(req: Request, res: Response) {
     try {
       const gstin = req.params.gstin;
       // const gstin = "33ADXPN7352G1Z3";
@@ -168,7 +165,7 @@ export class GstdetailsService {
     }
   }
 
-  async getFinacialYearFilingDetails(req, res) {
+  async getFinacialYearFilingDetails(req: Request, res: Response) {
     try {
       console.log("getFinacialYearFilingDetails ==> ", req.query);
 
@@ -195,7 +192,15 @@ export class GstdetailsService {
           console.error("filing", err);
           throw new Error("Error at fetch data");
         });
+      // console.log('gst_filing_details ==> ', gst_filing_details.length);
 
+
+      if (gst_filing_details.length <= 0) {
+        return res.status(502).json({
+          code: 404,
+          message: "No Data Available",
+        });
+      }
       return res.json({
         gst_filing_details,
       });
@@ -206,16 +211,50 @@ export class GstdetailsService {
       });
     }
   }
+
+  async getDetailsOf_Filing_FinacialYear_ByGST(req: Request, res: Response) {
+    try {
+      console.log("getDetailsOf_Filing_FinacialYear_ByGST ==> ", req.query);
+
+      const fy = req.query.fy;
+      const gstin = req.query.gstin;
+      const gst_filing_details = await this.gstFilingDetailRepo
+        .query("SELECT DISTINCT(taxp) FROM gstin_filing_detail WHERE gstin = ? AND fy = ? GROUP BY taxp;", [gstin, fy])
+        .catch((err) => {
+          console.error("filing", err);
+          throw new Error("Error at fetch data");
+        });
+      // console.log('gst_filing_details ==> ', gst_filing_details);
+
+
+      if (gst_filing_details.length <= 0) {
+        return res.status(500).json({
+          code: 404,
+          message: "No Data Available",
+        });
+      }
+      return res.json({
+        data: gst_filing_details,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        code: -5,
+        message: "internal server error",
+      });
+    }
+  }
+
+
   findOne(id: number) {
-    return `This action returns a #${id} gstdetail`;
+    return 'This action returns a #${id} gstdetail';
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(id: number, _updateGstdetailDto: UpdateGstdetailDto) {
-    return `This action updates a #${id} gstdetail`;
+    return 'This action updates a #${id} gstdetail';
   }
 
   remove(id: number) {
-    return `This action removes a #${id} gstdetail`;
+    return 'This action removes a #${id} gstdetail';
   }
 }

@@ -31,8 +31,12 @@ if (process.env.ENVIRONMENT === "PRODUCTION") {
       entities,
       synchronize: true,
       cache: true,
+      logging: true,
+      // extra: {
+      //   "connectionLimit": 5
+      // }
     }),
     GstdetailsModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
