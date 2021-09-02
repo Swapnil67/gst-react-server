@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Request, Response } from "express";
 import { Gstin_Business, Gstin_filing } from "src/user/typeorm/entities";
 import { Repository } from "typeorm";
 import { CreateGstdetailDto } from "./dto/create-gstdetail.dto";
@@ -16,21 +17,23 @@ export class GstdetailsService {
     private gstBusinessDetailRepo: Repository<Gstin_Business>,
     @InjectRepository(Gstin_filing)
     private gstFilingDetailRepo: Repository<Gstin_filing>
-  ) {}
-
-  create(createGstdetailDto: CreateGstdetailDto) {
+  ) { }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  create(_createGstdetailDto: CreateGstdetailDto) {
     return "This action adds a new gstdetail";
   }
 
-  async getCompanyBySearch(name, req, res) {
+  async getCompanyBySearch(name: any, _req: Request, res: Response) {
     try {
       const companies = await this.gstDetailRepo
         .createQueryBuilder("companies")
+        .distinct(true)
         .select(["companies.id", "companies.lgnm"])
-        .orderBy("companies.id", "DESC")
-        .maxExecutionTime(10000)
         .where("companies.lgnm LIKE :lgnm", { lgnm: `%${name}%` })
+        .groupBy("companies.lgnm")
+        .orderBy("companies.id", "DESC")
         .limit(100)
+        .maxExecutionTime(10000)
         .getMany()
         .catch((err) => {
           console.error(err);
@@ -142,6 +145,7 @@ export class GstdetailsService {
       // const gstin = "33ADXPN7352G1Z3";
       const gst_filing_details = await this.gstFilingDetailRepo
         .createQueryBuilder("filing")
+        .distinct(true)
         .select(["filing.fy"])
         .where("filing.gstin = :mygst", { mygst: gstin })
         .groupBy("filing.fy")
@@ -174,6 +178,8 @@ export class GstdetailsService {
       // const gstin = "33ADXPN7352G1Z3";
       const gst_filing_details = await this.gstFilingDetailRepo
         .createQueryBuilder("filing")
+        .distinct(true)
+        .distinctOn(['filing.dof', 'filing.id'])
         .select(["filing.dof", "filing.taxp"])
         .where("filing.fy = :fy AND filing.gstin = :gstin", {
           fy: fy,
@@ -204,7 +210,8 @@ export class GstdetailsService {
     return `This action returns a #${id} gstdetail`;
   }
 
-  update(id: number, updateGstdetailDto: UpdateGstdetailDto) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  update(id: number, _updateGstdetailDto: UpdateGstdetailDto) {
     return `This action updates a #${id} gstdetail`;
   }
 

@@ -7,14 +7,17 @@ export class gst_details {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Index()
   @ApiProperty()
   @Column()
   nba: string;
 
+  @Index()
   @ApiProperty()
   @Column()
   mandatedeInvoice: string;
 
+  @Index()
   @ApiProperty()
   @Column()
   aggreTurnOverFY: string;
@@ -24,6 +27,7 @@ export class gst_details {
   @Column()
   lgnm: string;
 
+  @Index()
   @ApiProperty()
   @Column()
   dty: string;
@@ -36,6 +40,7 @@ export class gst_details {
   @Column()
   cxdt: string;
 
+  @Index()
   @ApiProperty()
   @Column()
   gstin: string;

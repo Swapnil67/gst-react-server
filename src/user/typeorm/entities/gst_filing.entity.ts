@@ -1,15 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'gstin_filing_detail', synchronize: false })
 export class Gstin_filing {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Index()
   @ApiProperty()
   @Column()
   fy: string;
 
+  @Index()
   @ApiProperty()
   @Column()
   taxp: string;
@@ -34,6 +36,7 @@ export class Gstin_filing {
   @Column()
   status: string;
 
+  @Index()
   @ApiProperty()
   @Column()
   gstin: string;

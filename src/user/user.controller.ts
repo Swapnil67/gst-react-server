@@ -27,7 +27,7 @@ export class UserController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   @Post('/login')
   async login(@Res() res: Response, @Req() req: Request, @Body() body: UserLoginInfo) {
@@ -47,7 +47,7 @@ export class UserController {
     @Res() res: Response,
     @Body() body: any,
   ) {
-    let jwtAccessPayload: JwtAccessPayload = {
+    const jwtAccessPayload: JwtAccessPayload = {
       name: req.user['name'],
       id: req.user['id'],
     };
